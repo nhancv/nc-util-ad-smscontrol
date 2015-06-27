@@ -3,6 +3,7 @@ package cvnhan.android.smscontrol.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ import cvnhan.android.smscontrol.Utils;
  */
 public abstract class RoomBase extends Fragment implements View.OnClickListener {
     public static final String TAG = RoomBase.class.getSimpleName();
-    private Context context;
+    Context context;
 
     @InjectView(R.id.tvTemp)
     TextView tvTemp;
@@ -51,6 +52,10 @@ public abstract class RoomBase extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         context = getActivity();
         View rootView = inflater.inflate(R.layout.fragment_room, container, false);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         ButterKnife.inject(this, rootView);
 
         btn1.setOnClickListener(this);
@@ -75,32 +80,32 @@ public abstract class RoomBase extends Fragment implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn1:
-                btn1.setTextColor(Color.GREEN);
-                Utils.sendSMSMessage(context, Utils.getNumber(context), "btn1");
+//                btn1.setTextColor(Color.GREEN);
+                Utils.sendSMSMessage(getActivity(), context, Utils.getNumber(context), "=4-1-05-00-#");
                 break;
             case R.id.btn2:
-                Utils.sendSMSMessage(context, Utils.getNumber(context), "btn2");
+                Utils.sendSMSMessage(getActivity(), context, Utils.getNumber(context), "=4-1-05-01-#");
                 break;
             case R.id.btn3:
-                Utils.sendSMSMessage(context, Utils.getNumber(context), "btn3");
+                Utils.sendSMSMessage(getActivity(), context, Utils.getNumber(context), "btn3");
                 break;
             case R.id.btn4:
-                Utils.sendSMSMessage(context, Utils.getNumber(context), "btn4");
+                Utils.sendSMSMessage(getActivity(), context, Utils.getNumber(context), "btn4");
                 break;
             case R.id.btn5:
-                Utils.sendSMSMessage(context, Utils.getNumber(context), "btn5");
+                Utils.sendSMSMessage(getActivity(), context, Utils.getNumber(context), "btn5");
                 break;
             case R.id.btn6:
-                Utils.sendSMSMessage(context, Utils.getNumber(context), "btn6");
+                Utils.sendSMSMessage(getActivity(), context, Utils.getNumber(context), "btn6");
                 break;
             case R.id.btn7:
-                Utils.sendSMSMessage(context, Utils.getNumber(context), "btn7");
+                Utils.sendSMSMessage(getActivity(), context, Utils.getNumber(context), "btn7");
                 break;
             case R.id.btn8:
-                Utils.sendSMSMessage(context, Utils.getNumber(context), "btn8");
+                Utils.sendSMSMessage(getActivity(), context, Utils.getNumber(context), "btn8");
                 break;
             case R.id.btn9:
-                Utils.sendSMSMessage(context, Utils.getNumber(context), "btn9");
+                Utils.sendSMSMessage(getActivity(), context, Utils.getNumber(context), "btn9");
                 break;
         }
     }
@@ -143,5 +148,17 @@ public abstract class RoomBase extends Fragment implements View.OnClickListener 
         } else {
             btn.setTextColor(Color.WHITE);
         }
+    }
+    public void updateBtn(Button btn, boolean status) {
+        if (status) {
+            btn.setTextColor(Color.GREEN);
+        } else {
+            btn.setTextColor(Color.WHITE);
+        }
+    }
+    public boolean getStatus(Button btn){
+        if(btn.getCurrentTextColor()==Color.GREEN)
+            return true;
+        return false;
     }
 }
